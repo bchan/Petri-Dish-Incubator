@@ -83,9 +83,10 @@ void loop() {
 
   // First Line
   lcd.setCursor(0, 0);
-  lcd.print("Temp: ");
-  lcd.print(tempC);
-  lcd.print(" degC");
+  lcd.print("Tw:");
+  lcd.print(tempC, 1);
+  lcd.print(" Tc:");
+  lcd.print(dhtTemperature, 1);
 
   // Second Line
   lcd.setCursor(0, 1);
@@ -93,79 +94,71 @@ void loop() {
   lcd.print(humidity);
   lcd.print("%");
 
-//  if (tempC < 34.5) {
-//    digitalWrite(pinOut, HIGH);
-//  } else {
-//    digitalWrite(pinOut, LOW);
-//  }
-
-
-// if (firstRun == 0) {
+// Code for Regulating Water
+//  if (firstRun == 0) {
 //    if (tempC < 36) {
 //      digitalWrite(pinOut, HIGH);
 //    }
-//  
-//    if (tempC > 34) {
+//
+//    if (tempC > 35) {
 //      digitalWrite(pinOut, LOW);
+//      startCount = true;
 //      firstRun++;
 //    }
-//    
-//  } else if (firstRun > 1) {
-//    if (tempC < 36.5) {
-//      digitalWrite(pinOut, HIGH);
-//      startCount = true;
-//    }
-//  
-//    if (tempC > 36 && counter == 40) {
+//  } else {
+//    if (tempC > 36.3) {
 //      digitalWrite(pinOut, LOW);
 //      counter = 0;
-//      startCount = false;
+//    }
+//    if (counter > 5) {
+//      if (tempC < 36.3) {
+//        if (counter == 10){
+//          counter = 0;          
+//        }
+//        digitalWrite(pinOut, HIGH);
+//      } else {
+//        counter = 0;
+//        digitalWrite(pinOut, LOW);
+//      }
+//    } else {
+//        digitalWrite(pinOut, LOW);
 //    }
 //
-//    if (startCount) {
-//      counter++;
-//    }
-//
-//    
+//    counter++;
 //  }
+
+// Code for Regulating Air
   if (firstRun == 0) {
-    if (tempC < 36) {
+    if (dhtTemperature < 36) {
       digitalWrite(pinOut, HIGH);
     }
-  
-    if (tempC > 34) {
+
+    if (dhtTemperature > 35) {
       digitalWrite(pinOut, LOW);
+      startCount = true;
       firstRun++;
     }
-    
-  } else if (firstRun > 1) {
-    if (tempC < 36.5 && startCount == false) {
-      digitalWrite(pinOut, HIGH);
-      startCount = true;
+  } else {
+    if (dhtTemperature > 36.3) {
+      digitalWrite(pinOut, LOW);
+      counter = 0;
     }
-
-    if (counter == 20) {
-      if (tempC < 35.8) {
-        counter = 0;
+    if (counter > 5) {
+      if (dhtTemperature < 36.3) {
+        if (counter == 10){
+          counter = 0;          
+        }
+        digitalWrite(pinOut, HIGH);
       } else {
-        digitalWrite(pinOut, LOW);
-        startCount = false;
         counter = 0;
+        digitalWrite(pinOut, LOW);
       }
+    } else {
+        digitalWrite(pinOut, LOW);
     }
 
-    if (startCount) {
-      counter++;
-    }
-
-    
-  }
-
-  if (firstRun == 1 && tempC > 36) {
-    firstRun++;
-  }
-  
-  
+    counter++;
+  }  
 
   delay(1000);
 
